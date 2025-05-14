@@ -1,0 +1,28 @@
+AllCops:
+  TargetRubyVersion: 3.4
+  NewCops: enable
+  Exclude:
+    - "example/build/**/*"
+    - "example/mruby/**/*"
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/BlockLength:
+  Exclude:
+    - "test/**/*.rb"
+
+Metrics/CyclomaticComplexity:
+  Max: 19
+
+Metrics/MethodLength:
+  Max: 32
+
+Metrics/PerceivedComplexity:
+  Max: 20
