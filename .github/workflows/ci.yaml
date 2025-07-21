@@ -36,3 +36,17 @@ jobs:
 
       - name: Run rake build and test
         run: rake test
+
+  all-builds:
+    runs-on: ubuntu-latest
+    needs: build-test
+    if: always()
+    steps:
+      - name: Check matrix results
+        run: |
+          if [ "${{ needs.build-test.result }}" != "success" ]; then
+            echo "Some matrix jobs failed"
+            exit 1
+          fi
+      - name: All build-test matrix jobs completed
+        run: echo "All build-test matrix jobs completed."
