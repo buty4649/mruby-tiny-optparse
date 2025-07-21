@@ -1,3 +1,3 @@
 ENV['MRUBY_CONFIG'] = ENV['MRUBY_CONFIG'] || File.join(__dir__, 'build_config.rb')
 
-load File.join(__dir__, '..','Rakefile')
+load File.join(__dir__, '..', 'Rakefile')
