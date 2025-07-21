@@ -17,7 +17,7 @@ else
     if mruby_version =~ /^\d+\.\d+\.\d+$/
       puts "Download mruby #{mruby_version}..."
       system("wget https://github.com/mruby/mruby/archive/#{mruby_version}.zip -O mruby.zip")
-      system("unzip mruby.zip")
+      system('unzip mruby.zip')
       system("mv mruby-#{mruby_version} #{mruby_dir}")
       File.delete('mruby.zip')
     else

@@ -2,8 +2,7 @@ AllCops:
   TargetRubyVersion: 3.4
   NewCops: enable
   Exclude:
-    - "example/build/**/*"
-    - "example/mruby/**/*"
+    - "mruby/**/*"
 
 Style/FrozenStringLiteralComment:
   Enabled: false
