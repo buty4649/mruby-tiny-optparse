@@ -1,0 +1,30 @@
+name: Rake Build and Test
+
+on:
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        mruby_version: [master, 3.4.0]
+    env:
+      MRUBY_VERSION: ${{ matrix.mruby_version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Install dependencies
+        run: |
+          gem install bundler
+          bundle install || true
+
+      - name: Run rake build and test
+        run: rake all
+
+      - name: Run rake test
+        run: rake test
