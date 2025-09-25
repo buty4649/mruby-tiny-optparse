@@ -70,6 +70,7 @@ class OptionParser
 
     def self.guess(arg)
       return :none unless arg
+      return :optional if arg.start_with?('[=')
 
       a = arg.delete_prefix(' ').delete_prefix('=')
 
