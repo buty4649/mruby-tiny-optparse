@@ -151,61 +151,81 @@ assert('OptionParser#parse') do
     assert('--file [FILE] option parsing') do
       parser = OptionParser.new
       result = nil
-      parser.on('-f', '--file [FILE]', 'specify file') { |v| result = v }
+      called = false
+      parser.on('-f', '--file [FILE]', 'specify file') { |v| result = v; called = true }
 
       args = parser.parse(['--file', 'test.txt'])
       assert_equal 'test.txt', result, '--file [FILE] should parse value from separate argument'
       assert_equal [], args, 'option and argument should be consumed'
+      assert_true called, 'block should be called when argument is provided'
 
       result = nil
+      called = false
       args = parser.parse(['--file'])
       assert_equal nil, result, '--file [FILE] should be nil when no argument provided'
       assert_equal [], args, 'option should be consumed'
+      assert_true called, 'block should be called even when no argument provided'
 
       result = nil
+      called = false
       args = parser.parse(['-f', 'test.txt'])
       assert_equal 'test.txt', result, '-f [FILE] should parse value from separate argument'
       assert_equal [], args, 'option and argument should be consumed'
+      assert_true called, 'block should be called when argument is provided'
 
       result = nil
+      called = false
       args = parser.parse(['-f'])
       assert_equal nil, result, '-f [FILE] should be nil when no argument provided'
       assert_equal [], args, 'option should be consumed'
+      assert_true called, 'block should be called even when no argument provided'
     end
 
     assert('--file[=FILE] option parsing') do
       parser = OptionParser.new
       result = nil
-      parser.on('-f', '--file[=FILE]', 'specify file') { |v| result = v }
+      called = false
+      parser.on('-f', '--file[=FILE]', 'specify file') { |v| result = v; called = true }
 
       args = parser.parse(['--file=test.txt'])
       assert_equal 'test.txt', result, '--file[=FILE] should parse value from =VALUE format'
       assert_equal [], args, 'option should be consumed'
+      assert_true called, 'block should be called when argument is provided'
 
       result = nil
+      called = false
       args = parser.parse(['--file'])
       assert_equal nil, result, '--file[=FILE] should be nil when no =VALUE provided'
       assert_equal [], args, 'option should be consumed'
+      assert_true called, 'block should be called even when no =VALUE provided'
 
       result = nil
+      called = false
       args = parser.parse(['-f=test.txt'])
       assert_equal 'test.txt', result, '-f[=FILE] should parse value from =VALUE format'
       assert_equal [], args, 'option should be consumed'
+      assert_true called, 'block should be called when argument is provided'
 
       result = nil
+      called = false
       args = parser.parse(['-f'])
       assert_equal nil, result, '-f[=FILE] should be nil when no =VALUE provided'
       assert_equal [], args, 'option should be consumed'
+      assert_true called, 'block should be called even when no =VALUE provided'
 
       result = nil
+      called = false
       args = parser.parse(['-ftest.txt'])
       assert_equal 'test.txt', result, '-ftest.txt should parse value directly attached to option'
       assert_equal [], args, 'option should be consumed'
+      assert_true called, 'block should be called when argument is provided'
 
       result = nil
+      called = false
       args = parser.parse(['-f', 'test.txt'])
       assert_equal nil, result, '-f test.txt should not consume separate argument for [=FILE] pattern'
       assert_equal ['test.txt'], args, 'test.txt should remain in args'
+      assert_true called, 'block should be called even when no separate argument consumed'
     end
   end
 end
