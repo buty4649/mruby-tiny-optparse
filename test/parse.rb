@@ -117,4 +117,87 @@ assert('OptionParser#parse') do
     assert_equal true, flag_result, 'second -f definition should be called'
     assert_equal [], args, 'all options should be consumed'
   end
+
+  assert('--file=FILE option parsing') do
+    parser = OptionParser.new
+    result = nil
+    parser.on('-f', '--file=FILE', 'specify file') { |v| result = v }
+
+    args = parser.parse(['--file=test.txt'])
+    assert_equal 'test.txt', result, '--file=FILE should parse value from =VALUE format'
+    assert_equal [], args, 'option should be consumed'
+
+    result = nil
+    args = parser.parse(['-f', 'test.txt'])
+    assert_equal 'test.txt', result, '-f FILE should parse value from separate argument'
+    assert_equal [], args, 'option and argument should be consumed'
+
+    assert_raise(OptionParser::MissingArgument, 'should raise MissingArgument when -f has no argument') do
+      parser.parse(['-f'])
+    end
+
+    assert_raise(OptionParser::MissingArgument, 'should raise MissingArgument when --file has no argument') do
+      parser.parse(['--file'])
+    end
+  end
+
+  assert('--file [FILE] option parsing') do
+    parser = OptionParser.new
+    result = nil
+    parser.on('-f', '--file [FILE]', 'specify file') { |v| result = v }
+
+    args = parser.parse(['--file', 'test.txt'])
+    assert_equal 'test.txt', result, '--file [FILE] should parse value from separate argument'
+    assert_equal [], args, 'option and argument should be consumed'
+
+    result = nil
+    args = parser.parse(['--file'])
+    assert_equal nil, result, '--file [FILE] should be nil when no argument provided'
+    assert_equal [], args, 'option should be consumed'
+
+    result = nil
+    args = parser.parse(['-f', 'test.txt'])
+    assert_equal 'test.txt', result, '-f [FILE] should parse value from separate argument'
+    assert_equal [], args, 'option and argument should be consumed'
+
+    result = nil
+    args = parser.parse(['-f'])
+    assert_equal nil, result, '-f [FILE] should be nil when no argument provided'
+    assert_equal [], args, 'option should be consumed'
+  end
+
+  assert('--file[=FILE] option parsing') do
+    parser = OptionParser.new
+    result = nil
+    parser.on('-f', '--file[=FILE]', 'specify file') { |v| result = v }
+
+    args = parser.parse(['--file=test.txt'])
+    assert_equal 'test.txt', result, '--file[=FILE] should parse value from =VALUE format'
+    assert_equal [], args, 'option should be consumed'
+
+    result = nil
+    args = parser.parse(['--file'])
+    assert_equal nil, result, '--file[=FILE] should be nil when no =VALUE provided'
+    assert_equal [], args, 'option should be consumed'
+
+    result = nil
+    args = parser.parse(['-f=test.txt'])
+    assert_equal 'test.txt', result, '-f[=FILE] should parse value from =VALUE format'
+    assert_equal [], args, 'option should be consumed'
+
+    result = nil
+    args = parser.parse(['-f'])
+    assert_equal nil, result, '-f[=FILE] should be nil when no =VALUE provided'
+    assert_equal [], args, 'option should be consumed'
+
+    result = nil
+    args = parser.parse(['-ftest.txt'])
+    assert_equal 'test.txt', result, '-ftest.txt should parse value directly attached to option'
+    assert_equal [], args, 'option should be consumed'
+
+    result = nil
+    args = parser.parse(['-f', 'test.txt'])
+    assert_equal nil, result, '-f test.txt should not consume separate argument for [=FILE] pattern'
+    assert_equal ['test.txt'], args, 'test.txt should remain in args'
+  end
 end
