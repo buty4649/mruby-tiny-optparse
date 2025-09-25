@@ -46,7 +46,7 @@ assert('OptionParser#on') do
     result = nil
     parser.on('-f', '--file [FILE]', 'specify file') { |f| result = f }
     args = parser.parse(['-f'])
-    assert_equal nil, result, 'optional argument should set result to nil when not provided'
+    assert_nil result, 'optional argument should set result to nil when not provided'
     assert_equal [], args, 'option should be consumed'
   end
 
