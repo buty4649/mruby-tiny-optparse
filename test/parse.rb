@@ -152,7 +152,10 @@ assert('OptionParser#parse') do
       parser = OptionParser.new
       result = nil
       called = false
-      parser.on('-f', '--file [FILE]', 'specify file') { |v| result = v; called = true }
+      parser.on('-f', '--file [FILE]', 'specify file') do |v|
+        result = v
+        called = true
+      end
 
       args = parser.parse(['--file', 'test.txt'])
       assert_equal 'test.txt', result, '--file [FILE] should parse value from separate argument'
@@ -185,7 +188,10 @@ assert('OptionParser#parse') do
       parser = OptionParser.new
       result = nil
       called = false
-      parser.on('-f', '--file[=FILE]', 'specify file') { |v| result = v; called = true }
+      parser.on('-f', '--file[=FILE]', 'specify file') do |v|
+        result = v
+        called = true
+      end
 
       args = parser.parse(['--file=test.txt'])
       assert_equal 'test.txt', result, '--file[=FILE] should parse value from =VALUE format'
