@@ -25,3 +25,7 @@ Metrics/MethodLength:
 
 Metrics/PerceivedComplexity:
   Max: 20
+
+Layout/LineLength:
+  Exclude:
+    - "test/**/*.rb"
