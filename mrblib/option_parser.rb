@@ -51,6 +51,8 @@ class OptionParser
 
     switch = Switch.new(short, long, nolong, arg, description, type, block)
     @list.append(switch, short, long, nolong)
+
+    self
   end
 
   def parse(args)
