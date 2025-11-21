@@ -91,6 +91,11 @@ opts.separator 'Other options:'
 opts.on('-h', '--help', 'Show help') { puts opts.help }
 ```
 
+## Limitation
+
+* Some methods are not implemented
+* `parse` method is an alias of `permute` (does not respect `$POSIXLY_CORRECT`)
+
 ## License
 
 MIT License

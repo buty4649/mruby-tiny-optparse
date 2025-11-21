@@ -81,93 +81,127 @@ assert('OptionParser#on') do
   end
 end
 
-assert('OptionParser#parse') do
+assert('OptionParser#order') do
+  parser = OptionParser.new
+  args = %w[-a -b foo]
+  assert_stub = lambda do |a, &b|
+    assert_equal %w[-a -b foo], a
+    assert_not_same args, a
+    assert_false b.nil?
+  end
+
+  parser.stub(:order!, assert_stub) do
+    parser.order(args) { |s| _ = s }
+  end
+end
+
+assert('OptionParser#order!') do
   def parser
     OptionParser.new
   end
 
   assert('with short option') do
     result = nil
-    args = parser.on('-v') { |v| result = v }
-                 .parse(%w[-v])
+    args = %w[-v]
+    remaining = parser.on('-v') { |v| result = v }
+                      .order!(args)
     assert_true result
+    assert_equal [], remaining
     assert_equal [], args
   end
 
   assert('with long option') do
     result = nil
-    args = parser.on('--verbose') { |v| result = v }
-                 .parse(%w[--verbose])
+    args = %w[--verbose]
+    remaining = parser.on('--verbose') { |v| result = v }
+                      .order!(args)
     assert_true result
+    assert_equal [], remaining
     assert_equal [], args
   end
 
   assert('with required argument') do
     result = nil
-    args = parser.on('-f', '--file FILE') { |f| result = f }
-                 .parse(%w[--file test.txt])
+    args = %w[--file test.txt]
+    remaining = parser.on('-f', '--file FILE') { |f| result = f }
+                      .order!(args)
     assert_equal 'test.txt', result
+    assert_equal [], remaining
     assert_equal [], args
   end
 
   assert('with optional argument') do
     result = nil
-    args = parser.on('-f', '--file [FILE]') { |f| result = f }
-                 .parse(%w[--file test.txt])
+    args = %w[--file test.txt]
+    remaining = parser.on('-f', '--file [FILE]') { |f| result = f }
+                      .order!(args)
     assert_equal 'test.txt', result
+    assert_equal [], remaining
     assert_equal [], args
 
     result = nil
-    args = parser.on('-f', '--file [FILE]') { |f| result = f }
-                 .parse(%w[--file])
+    args = %w[--file]
+    remaining = parser.on('-f', '--file [FILE]') { |f| result = f }
+                      .order!(args)
     assert_nil result
+    assert_equal [], remaining
     assert_equal [], args
   end
 
   assert('with --[no-]option pattern') do
     result = nil
-    args = parser.on('--[no-]verbose') { |v| result = v }
-                 .parse(%w[--verbose])
+    args = %w[--verbose]
+    remaining = parser.on('--[no-]verbose') { |v| result = v }
+                      .order!(args)
     assert_true result
+    assert_equal [], remaining
     assert_equal [], args
 
     result = nil
-    args = parser.on('--[no-]verbose') { |v| result = v }
-                 .parse(%w[--no-verbose])
+    args = %w[--no-verbose]
+    remaining = parser.on('--[no-]verbose') { |v| result = v }
+                      .order!(args)
     assert_false result
+    assert_equal [], remaining
     assert_equal [], args
   end
 
   assert('with positional arguments') do
     result_a = nil
     result_b = nil
-    args = parser.on('-a') { |a| result_a = a }
-                 .on('-b') { |b| result_b = b }
-                 .parse(%w[-a foo -b])
+    args = %w[-a foo -b]
+    remaining = parser.on('-a') { |a| result_a = a }
+                      .on('-b') { |b| result_b = b }
+                      .order!(args)
     assert_true result_a
     assert_nil result_b
+    assert_equal %w[foo -b], remaining
     assert_equal %w[foo -b], args
   end
 
   assert('with mixed options and positional arguments') do
     result_v = nil
     result_f = nil
-    args = parser.on('-v', '--verbose') { |v| result_v = v }
-                 .on('-f', '--file FILE') { |f| result_f = f }
-                 .parse(%w[-v input.txt --file output.txt remaining args])
+    args = %w[-v input.txt --file output.txt remaining args]
+    remaining = parser.on('-v', '--verbose') { |v| result_v = v }
+                      .on('-f', '--file FILE') { |f| result_f = f }
+                      .order!(args)
     assert_true result_v
     assert_nil result_f # --file won't be parsed after encountering positional argument
+    assert_equal %w[input.txt --file output.txt remaining args], remaining
     assert_equal %w[input.txt --file output.txt remaining args], args
   end
 
   assert('with options before positional arguments') do
     result_v = nil
     result_f = nil
-    args = parser.on('-v', '--verbose') { |v| result_v = v }
-                 .on('-f', '--file FILE') { |f| result_f = f }
-                 .parse(%w[--file output.txt -v input.txt remaining args])
+    args = %w[--file output.txt -v input.txt remaining args]
+    remaining = parser.on('-v', '--verbose') { |v| result_v = v }
+                      .on('-f', '--file FILE') { |f| result_f = f }
+                      .order!(args)
     assert_true result_v
     assert_equal 'output.txt', result_f
+    assert_equal %w[input.txt remaining args], remaining
     assert_equal %w[input.txt remaining args], args
   end
 
@@ -175,26 +209,221 @@ assert('OptionParser#parse') do
     result_a = nil
     result_b = nil
     result_c = nil
-    args = parser.on('-a') { |a| result_a = a }
-                 .on('-b') { |b| result_b = b }
-                 .on('-c') { |c| result_c = c }
-                 .parse(%w[-a foo -- -b -c])
+    args = %w[-a foo -- -b -c]
+    remaining = parser.on('-a') { |a| result_a = a }
+                      .on('-b') { |b| result_b = b }
+                      .on('-c') { |c| result_c = c }
+                      .order!(args)
     assert_true result_a
     assert_nil result_b
     assert_nil result_c
+    assert_equal %w[foo -- -b -c], remaining
     assert_equal %w[foo -- -b -c], args
   end
 
   assert('with -- separator and no arguments before') do
     result_a = nil
     result_b = nil
-    args = parser.on('-a') { |a| result_a = a }
-                 .on('-b') { |b| result_b = b }
-                 .parse(%w[-- -a -b])
+    args = %w[-- -a -b]
+    remaining = parser.on('-a') { |a| result_a = a }
+                      .on('-b') { |b| result_b = b }
+                      .order!(args)
     assert_nil result_a
     assert_nil result_b
+    assert_equal %w[-a -b], remaining
     assert_equal %w[-a -b], args
   end
+
+  assert('with block to handle positional arguments') do
+    result_v = nil
+    positional_args = []
+    args = %w[-v file1.txt file2.txt --verbose file3.txt]
+    remaining = parser.on('-v', '--verbose') { |v| result_v = v }
+                      .order!(args) { |arg| positional_args << arg }
+    assert_true result_v
+    assert_equal %w[file1.txt file2.txt file3.txt], positional_args
+    assert_equal [], remaining
+    assert_equal [], args
+  end
+
+  assert('with block processing mixed options and positional arguments') do
+    result_f = nil
+    positional_args = []
+    args = %w[--file config.txt input1.txt -v input2.txt output.txt]
+    remaining = parser.on('-f', '--file FILE') { |f| result_f = f }
+                      .on('-v', '--verbose')
+                      .order!(args) { |arg| positional_args << arg }
+    assert_equal 'config.txt', result_f
+    assert_equal %w[input1.txt input2.txt output.txt], positional_args
+    assert_equal [], remaining
+    assert_equal [], args
+  end
+
+  assert('with block and -- separator') do
+    result_a = nil
+    positional_args = []
+    args = %w[-a file1.txt -- --file file2.txt -b]
+    remaining = parser.on('-a') { |a| result_a = a }
+                      .on('-b')
+                      .on('--file FILE')
+                      .order!(args) { |arg| positional_args << arg }
+    assert_true result_a
+    assert_equal %w[file1.txt], positional_args
+    assert_equal %w[--file file2.txt -b], remaining
+    assert_equal %w[--file file2.txt -b], args
+  end
+end
+
+assert('OptionParser#permute!') do
+  def parser
+    OptionParser.new
+  end
+
+  assert('with short option') do
+    result = nil
+    args = %w[-v]
+    remaining = parser.on('-v') { |v| result = v }
+                      .permute!(args)
+    assert_true result
+    assert_equal [], remaining
+    assert_equal [], args
+  end
+
+  assert('with long option') do
+    result = nil
+    args = %w[--verbose]
+    remaining = parser.on('--verbose') { |v| result = v }
+                      .permute!(args)
+    assert_true result
+    assert_equal [], remaining
+    assert_equal [], args
+  end
+
+  assert('with required argument') do
+    result = nil
+    args = %w[--file test.txt]
+    remaining = parser.on('-f', '--file FILE') { |f| result = f }
+                      .permute!(args)
+    assert_equal 'test.txt', result
+    assert_equal [], remaining
+    assert_equal [], args
+  end
+
+  assert('with optional argument') do
+    result = nil
+    args = %w[--file test.txt]
+    remaining = parser.on('-f', '--file [FILE]') { |f| result = f }
+                      .permute!(args)
+    assert_equal 'test.txt', result
+    assert_equal [], remaining
+    assert_equal [], args
+
+    result = nil
+    args = %w[--file]
+    remaining = parser.on('-f', '--file [FILE]') { |f| result = f }
+                      .permute!(args)
+    assert_nil result
+    assert_equal [], remaining
+    assert_equal [], args
+  end
+
+  assert('with --[no-]option pattern') do
+    result = nil
+    args = %w[--verbose]
+    remaining = parser.on('--[no-]verbose') { |v| result = v }
+                      .permute!(args)
+    assert_true result
+    assert_equal [], remaining
+    assert_equal [], args
+
+    result = nil
+    args = %w[--no-verbose]
+    remaining = parser.on('--[no-]verbose') { |v| result = v }
+                      .permute!(args)
+    assert_false result
+    assert_equal [], remaining
+    assert_equal [], args
+  end
+
+  assert('with positional arguments') do
+    result_a = nil
+    result_b = nil
+    args = %w[-a foo -b]
+    remaining = parser.on('-a') { |a| result_a = a }
+                      .on('-b') { |b| result_b = b }
+                      .permute!(args)
+    assert_true result_a
+    assert_true result_b
+    assert_equal %w[foo], remaining
+    assert_equal %w[foo], args
+  end
+
+  assert('with mixed options and positional arguments') do
+    result_v = nil
+    result_f = nil
+    args = %w[-v input.txt --file output.txt remaining args]
+    remaining = parser.on('-v', '--verbose') { |v| result_v = v }
+                      .on('-f', '--file FILE') { |f| result_f = f }
+                      .permute!(args)
+    assert_true result_v
+    assert_equal 'output.txt', result_f
+    assert_equal %w[input.txt remaining args], remaining
+    assert_equal %w[input.txt remaining args], args
+  end
+
+  assert('with options before positional arguments') do
+    result_v = nil
+    result_f = nil
+    args = %w[--file output.txt -v input.txt remaining args]
+    remaining = parser.on('-v', '--verbose') { |v| result_v = v }
+                      .on('-f', '--file FILE') { |f| result_f = f }
+                      .permute!(args)
+    assert_true result_v
+    assert_equal 'output.txt', result_f
+    assert_equal %w[input.txt remaining args], remaining
+    assert_equal %w[input.txt remaining args], args
+  end
+
+  assert('with -- separator') do
+    result_a = nil
+    result_b = nil
+    result_c = nil
+    args = %w[-a foo -- -b -c]
+    remaining = parser.on('-a') { |a| result_a = a }
+                      .on('-b') { |b| result_b = b }
+                      .on('-c') { |c| result_c = c }
+                      .permute!(args)
+    assert_true result_a
+    assert_nil result_b
+    assert_nil result_c
+    assert_equal %w[foo -b -c], remaining
+    assert_equal %w[foo -b -c], args
+  end
+
+  assert('with -- separator and no arguments before') do
+    result_a = nil
+    result_b = nil
+    args = %w[-- -a -b]
+    remaining = parser.on('-a') { |a| result_a = a }
+                      .on('-b') { |b| result_b = b }
+                      .permute!(args)
+    assert_nil result_a
+    assert_nil result_b
+    assert_equal %w[-a -b], remaining
+    assert_equal %w[-a -b], args
+  end
+end
+
+assert('OptionParser#parse') do
+  skip 'In mruby, alias methods do not return true for equality'
+  parser = OptionParser.new
+  assert_equal parser.method(:permute), parser.method(:parse)
+end
+
+assert('OptionParser#parse!') do
+  skip 'In mruby, alias methods do not return true for equality'
+  parser = OptionParser.new
+  assert_equal parser.method(:permute!), parser.method(:parse!)
 end
 
 assert('OptionParser#help') do
