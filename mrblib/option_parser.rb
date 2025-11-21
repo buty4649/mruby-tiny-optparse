@@ -51,34 +51,35 @@ class OptionParser
 
     switch = Switch.new(short, long, nolong, arg, description, type, block)
     @list.append(switch, short, long, nolong)
+
+    self
   end
 
-  def parse(args)
-    parse!(args.dup)
-  end
+  def order(args, &) = order!(args.dup, &)
 
-  def parse!(args)
+  def order!(args, &block)
     while (arg = args.shift)
       break if arg == '--'
 
       o = Option.parse(arg)
       if o.type == :positional
-        args.unshift(arg)
-        break
+        unless block
+          args.unshift(arg)
+          break
+        end
+
+        block.call(arg)
+        next
       end
 
-      switch = @list[o]
-
-      raise InvalidOption, "invalid option: #{arg}" unless switch
+      raise InvalidOption, "invalid option: #{arg}" unless (switch = @list[o])
 
       value = o.value
-
       if switch.type == :none
         if o.style == :long
           raise NeedlessArgument, "option does not take an argument: #{arg}" if value
 
           value = !o.name.start_with?('--no-')
-
         elsif value
           v = "-#{value}"
           # Concatenated short options(e.g. -ab)
@@ -86,14 +87,13 @@ class OptionParser
 
           args.unshift(v)
           value = true
-
         else
           value = true
         end
       elsif switch.type == :required && value.nil?
         value = args.shift
         raise MissingArgument, "option requires an argument: #{arg}" unless value
-      elsif switch.type == :placed && !args&.first&.start_with?('-')
+      elsif switch.type == :placed && !args.first&.start_with?('-')
         value = args.shift
       end
 
@@ -102,6 +102,18 @@ class OptionParser
 
     args
   end
+
+  def permute(args) = permute!(args)
+
+  def permute!(args)
+    noopts = []
+    order!(args) { |s| noopts << s }
+    args[0, 0] = noopts
+    args
+  end
+
+  alias parse permute
+  alias parse! permute!
 
   def separator(str)
     @list.append(str, nil, nil, nil)
