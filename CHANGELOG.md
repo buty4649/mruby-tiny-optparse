@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.3.1](https://github.com/buty4649/mruby-tiny-optparse/compare/v0.3.0...v0.3.1) - 2025-11-24
+- ci(deps): bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/16
+- ci(deps): bump actions/create-github-app-token from 2.1.4 to 2.2.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/18
+- ci(deps): bump actions/checkout from 4.3.1 to 6.0.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/17
+
 ## [v0.3.0](https://github.com/buty4649/mruby-tiny-optparse/compare/v0.2.2...v0.3.0) - 2025-11-21
 - Move Ruby version specification to Gemfile for Dependabot by @buty4649 in https://github.com/buty4649/mruby-tiny-optparse/pull/13
 - feat: add order and permute parsing methods by @buty4649 in https://github.com/buty4649/mruby-tiny-optparse/pull/15
