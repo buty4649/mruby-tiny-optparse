@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.3.2](https://github.com/buty4649/mruby-tiny-optparse/compare/v0.3.1...v0.3.2) - 2026-01-26
+- ci(deps): bump Songmu/tagpr from 1.10.0 to 1.11.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/26
+- ci(deps): bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/27
+- ci(deps): bump Songmu/tagpr from 1.11.0 to 1.11.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/28
+- ci(deps): bump actions/checkout from 6.0.1 to 6.0.2 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/29
+- ci(deps): bump Songmu/tagpr from 1.11.1 to 1.12.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/30
+
 ## [v0.3.1](https://github.com/buty4649/mruby-tiny-optparse/compare/v0.3.0...v0.3.1) - 2025-12-08
 - ci(deps): bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/16
 - ci(deps): bump actions/create-github-app-token from 2.1.4 to 2.2.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/18
