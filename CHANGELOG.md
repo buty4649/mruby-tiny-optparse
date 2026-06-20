@@ -1,5 +1,27 @@
 # Changelog
 
+## [v0.3.2](https://github.com/buty4649/mruby-tiny-optparse/compare/v0.3.1...v0.3.2) - 2026-04-15
+- ci(deps): bump Songmu/tagpr from 1.10.0 to 1.11.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/26
+- ci(deps): bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/27
+- ci(deps): bump Songmu/tagpr from 1.11.0 to 1.11.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/28
+- ci(deps): bump actions/checkout from 6.0.1 to 6.0.2 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/29
+- ci(deps): bump Songmu/tagpr from 1.11.1 to 1.12.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/30
+- deps(deps): bump rubocop from 1.82.1 to 1.84.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/32
+- ci(deps): bump Songmu/tagpr from 1.12.1 to 1.15.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/33
+- deps(deps): bump rubocop from 1.84.0 to 1.84.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/34
+- deps(deps): bump rubocop from 1.84.1 to 1.84.2 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/35
+- ci(deps): bump Songmu/tagpr from 1.15.0 to 1.17.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/36
+- ci(deps): bump Songmu/tagpr from 1.17.0 to 1.17.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/37
+- deps(deps): bump rubocop from 1.84.2 to 1.85.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/38
+- deps(deps): bump rubocop from 1.85.0 to 1.85.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/39
+- ci(deps): bump actions/create-github-app-token from 2.2.1 to 3.0.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/40
+- deps(deps): bump rubocop from 1.85.1 to 1.86.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/42
+- ci(deps): bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/41
+- ci(deps): bump Songmu/tagpr from 1.17.1 to 1.18.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/43
+- ci(deps): bump actions/create-github-app-token from 3.0.0 to 3.1.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/44
+- deps(deps): bump rubocop from 1.86.0 to 1.86.1 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/45
+- ci(deps): bump Songmu/tagpr from 1.18.1 to 1.18.2 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/46
+
 ## [v0.3.1](https://github.com/buty4649/mruby-tiny-optparse/compare/v0.3.0...v0.3.1) - 2025-12-08
 - ci(deps): bump dependabot/fetch-metadata from 2.3.0 to 2.4.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/16
 - ci(deps): bump actions/create-github-app-token from 2.1.4 to 2.2.0 by @dependabot[bot] in https://github.com/buty4649/mruby-tiny-optparse/pull/18
